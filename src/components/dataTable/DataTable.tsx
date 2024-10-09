@@ -1,6 +1,9 @@
 import { DataGrid, GridColDef, GridToolbar } from '@mui/x-data-grid';
 import './dataTable.scss';
 import { Link } from 'react-router-dom';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { deleteDoc, doc } from 'firebase/firestore';
+import { db } from '../../../firebase';
 
 type Props = {
   columns: GridColDef[];
@@ -9,6 +12,24 @@ type Props = {
 };
 
 const DataTable = (props: Props) => {
+  const queryClient = useQueryClient();
+
+  const deleteItem = async (id: string) => {
+    const itemDocRef = doc(db, props.slug, id);
+    await deleteDoc(itemDocRef);
+  };
+
+  const mutation = useMutation({
+    mutationFn: (id: string) => deleteItem(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [`${props.slug}`] });
+    },
+  });
+
+  const handleDelete = (id: string) => {
+    mutation.mutate(id);
+  };
+
   const actionColumn: GridColDef = {
     field: 'action',
     headerName: 'Action',
@@ -19,7 +40,7 @@ const DataTable = (props: Props) => {
           <Link to={`/${props.slug}/${params.row.id}`}>
             <img src='/view.svg' alt='' />
           </Link>
-          <div className='delete'>
+          <div className='delete' onClick={() => handleDelete(params.row.id)}>
             <img src='/delete.svg' alt='' />
           </div>
         </div>
