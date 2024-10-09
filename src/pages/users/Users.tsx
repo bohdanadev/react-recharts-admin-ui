@@ -4,6 +4,7 @@ import { useState } from 'react';
 
 import './users.scss';
 import { userRows } from '../../data';
+import Add from '../../components/add/Add';
 
 const columns: GridColDef[] = [
   { field: 'id', headerName: 'ID', width: 90 },
@@ -64,7 +65,7 @@ const Users = () => {
       </div>
       <DataTable slug='users' columns={columns} rows={userRows} />
 
-      {/* {open && <Add slug='user' columns={columns} setOpen={setOpen} />} */}
+      {open && <Add slug='user' columns={columns} setOpen={setOpen} />}
     </div>
   );
 };
