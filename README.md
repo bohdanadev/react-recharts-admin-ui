@@ -57,3 +57,5 @@ Add your Firebase configuration by setting the environment variables in `.env` f
    ```bash
    npm run dev
    ```
+
+   [Demo](https://react-recharts-admin-ui.vercel.app/)
