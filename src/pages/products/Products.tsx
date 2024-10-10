@@ -76,7 +76,8 @@ const Products = () => {
     const q = query(collection(db, 'products'), orderBy('title', 'asc'));
     const querySnapshot = await getDocs(q);
     return querySnapshot.docs.map(
-      (doc) => ({ id: doc.id, ...doc.data() } as IProduct)
+      (doc) =>
+        ({ id: doc.id, ...(doc.data() as Partial<IProduct>) } as IProduct)
     );
   };
 
